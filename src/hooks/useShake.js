@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Accelerometer } from 'expo-sensors';
 
+// Escuta o acelerômetro enquanto a tela está ativa e chama onShake ao detectar uma sacudida.
 export default function useShake(onShake, enabled = true) {
   const callback = useRef(onShake);
 

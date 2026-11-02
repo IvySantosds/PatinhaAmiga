@@ -4,6 +4,7 @@ import * as Haptics from 'expo-haptics';
 import { db } from '../config/firebase';
 import { useAuth } from '../context/AuthContext';
 
+// Mantém os favoritos do usuário sincronizados com a subcoleção do Firestore.
 export default function useFavorites() {
   const { user } = useAuth();
   const [snapshot, setSnapshot] = useState({ uid: null, favs: [], loading: true });
@@ -29,8 +30,10 @@ export default function useFavorites() {
     );
   }, [user]);
 
+  // Informa se o animal já está salvo na lista.
   const isFav = useCallback((id) => favs.some((favorite) => favorite.id === id), [favs]);
 
+  // Salva ou remove o animal e dá retorno tátil quando a operação funciona.
   const toggle = useCallback(async (pet) => {
     if (!user || !pet?.id) return false;
 

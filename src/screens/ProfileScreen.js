@@ -6,11 +6,13 @@ import { auth } from '../config/firebase';
 import { useAuth } from '../context/AuthContext';
 import { colors, font, shadow } from '../theme/theme';
 
+// Mostra a conta ativa e oferece uma saída segura da sessão.
 export default function ProfileScreen() {
   const { user } = useAuth();
   const [loggingOut, setLoggingOut] = useState(false);
   const name = user?.displayName || user?.email?.split('@')[0] || 'Adotante';
 
+  // Só encerra a sessão depois da confirmação da pessoa.
   function confirmLogout() {
     Alert.alert('Sair da conta', 'Quer mesmo encerrar sua sessão?', [
       { text: 'Cancelar', style: 'cancel' },

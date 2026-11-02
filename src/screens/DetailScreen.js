@@ -15,6 +15,7 @@ function Info({ titulo, valor, cor }) {
   );
 }
 
+// Apresenta as informações do animal e inicia o fluxo de adoção.
 export default function DetailScreen({ route, navigation }) {
   const pet = route.params?.pet;
   const { isFav, toggle } = useFavorites();

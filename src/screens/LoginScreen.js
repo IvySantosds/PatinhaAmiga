@@ -15,6 +15,7 @@ const ERROS = {
   'permission-denied': 'O Firestore recusou a gravação. Confira as regras da coleção usuarios.',
 };
 
+// Faz login ou cadastro e garante que a pessoa também tenha um perfil no Firestore.
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -22,6 +23,7 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState('');
 
+  // Autentica e cria o perfil quando ele ainda não existe.
   async function enviar() {
     setErro('');
     setLoading(true);
