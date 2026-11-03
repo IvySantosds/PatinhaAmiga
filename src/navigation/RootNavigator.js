@@ -2,9 +2,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ActivityIndicator } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import AdminRequestScreen from '../screens/AdminRequestScreen';
+import AdoptionScreen from '../screens/AdoptionScreen';
 import DetailScreen from '../screens/DetailScreen';
 import LoginScreen from '../screens/LoginScreen';
-import PendingScreen from '../screens/PendingScreen';
+import SuccessScreen from '../screens/SuccessScreen';
 import AdminTabs from './AdminTabs';
 import { colors } from '../theme/theme';
 import MainTabs from './MainTabs';
@@ -27,8 +28,8 @@ export default function RootNavigator() {
         <>
           <Stack.Screen name='Tabs' component={MainTabs} />
           <Stack.Screen name='Detail' component={DetailScreen} />
-          <Stack.Screen name='Adoption' component={PendingScreen} />
-          <Stack.Screen name='Success' component={PendingScreen} options={{ gestureEnabled: false }} />
+          <Stack.Screen name='Adoption' component={AdoptionScreen} />
+          <Stack.Screen name='Success' component={SuccessScreen} options={{ gestureEnabled: false }} />
         </>
       )}
     </Stack.Navigator>
