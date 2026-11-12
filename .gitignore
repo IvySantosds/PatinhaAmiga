@@ -41,3 +41,7 @@ example
 # generated native folders
 /ios
 /android
+
+# local agent instructions and private documentation
+/AGENTS.md
+/docs/
