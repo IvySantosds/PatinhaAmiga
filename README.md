@@ -51,13 +51,8 @@ O projeto foi desenvolvido como aplicativo móvel e atende a estes requisitos:
 
 ## Demonstração
 
-Add no proprio github
+[Assista à demonstração do PatinhaAmiga]([https://youtube.com/shorts/_WEwdj7bUUo?feature=share])
 
-```md
-![Demonstração do PatinhaAmiga](docs/demonstracao.gif)
-```
-
-Gravação em cima! 
 
 ## Instalação e Execução
 
