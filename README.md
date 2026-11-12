@@ -51,7 +51,7 @@ O projeto foi desenvolvido como aplicativo móvel e atende a estes requisitos:
 
 ## Demonstração
 
-[Assista à demonstração do PatinhaAmiga]([https://youtube.com/shorts/_WEwdj7bUUo?feature=share])
+[Assista à demonstração do PatinhaAmiga](https://youtube.com/shorts/_WEwdj7bUUo?feature=share)
 
 
 ## Instalação e Execução
