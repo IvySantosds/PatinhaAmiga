@@ -45,3 +45,6 @@ example
 # local agent instructions and private documentation
 /AGENTS.md
 /docs/
+
+# editor-specific settings
+/.vscode/
