@@ -23,7 +23,13 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Permita que o PatinhaAmiga use sua localização para mostrar ONGs próximas."
+        }
+      ]
     ]
   }
 }

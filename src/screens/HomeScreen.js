@@ -12,6 +12,11 @@ import useShake from '../hooks/useShake';
 import { colors, font } from '../theme/theme';
 
 const FILTROS = ['Todos', 'Cão', 'Gato', 'Filhote'];
+// Tira acentos e diferenças entre maiúsculas/minúsculas da busca.
+const normalizarTexto = (valor) => String(valor || '')
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .toLowerCase();
 
 // Mostra os animais disponíveis e deixa filtrar, buscar ou abrir um perfil.
 export default function HomeScreen({ navigation }) {
@@ -19,11 +24,13 @@ export default function HomeScreen({ navigation }) {
   const { isFav, toggle } = useFavorites();
   const focado = useIsFocused();
   const [pets, setPets] = useState([]);
+  const [ongs, setOngs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
   const [busca, setBusca] = useState('');
   const [filtro, setFiltro] = useState('Todos');
 
+  // Mantém os animais disponíveis atualizados com o Firestore.
   useEffect(() => onSnapshot(
     collection(db, 'animais'),
     (snap) => {
@@ -40,11 +47,27 @@ export default function HomeScreen({ navigation }) {
     },
   ), []);
 
+  // Lê as ONGs para também procurar pela cidade ou pelo nome delas.
+  useEffect(() => onSnapshot(
+    collection(db, 'ongs'),
+    (snap) => setOngs(snap.docs.map((documento) => ({ id: documento.id, ...documento.data() }))),
+    (error) => console.warn('Não foi possível carregar os dados das ONGs para a busca.', error),
+  ), []);
+
+  const ongsPorId = useMemo(() => Object.fromEntries(ongs.map((ong) => [ong.id, ong])), [ongs]);
+  const ongsPorNome = useMemo(() => Object.fromEntries(
+    ongs.filter((ong) => ong.nome).map((ong) => [normalizarTexto(ong.nome), ong]),
+  ), [ongs]);
+
+  // Combina os dados do animal e da ONG antes de aplicar a busca e o filtro.
   const lista = useMemo(() => pets.filter((p) => {
-    const txt = [p.nome, p.raca, p.cidade].filter(Boolean).join(' ').toLowerCase();
+    const ong = ongsPorId[p.ongId] || ongsPorNome[normalizarTexto(p.ongNome)];
+    const txt = [p.nome, p.raca, p.cidade, p.ongNome, ong?.nome, ong?.cidade]
+      .map(normalizarTexto)
+      .join(' ');
     const okFiltro = filtro === 'Todos' || p.especie === filtro || (filtro === 'Filhote' && p.filhote);
-    return okFiltro && txt.includes(busca.toLowerCase());
-  }), [pets, busca, filtro]);
+    return okFiltro && txt.includes(normalizarTexto(busca.trim()));
+  }), [pets, ongsPorId, ongsPorNome, busca, filtro]);
 
   // Escolhe um animal da lista e abre os detalhes dele.
   const sortear = useCallback(() => {
@@ -67,7 +90,7 @@ export default function HomeScreen({ navigation }) {
           <View style={{ padding: 7 }}>
             <Text style={s.hi}>Oi, {nome}!</Text>
             <Text style={s.title}>Quem vai te adotar hoje?</Text>
-            <TextInput style={s.search} placeholder='Buscar nome ou raça do pet' placeholderTextColor={colors.soft} value={busca} onChangeText={setBusca} />
+            <TextInput style={s.search} placeholder='Buscar animal, raça, ONG ou cidade' placeholderTextColor={colors.soft} value={busca} onChangeText={setBusca} />
             <View style={s.chips}>
               {FILTROS.map((f) => (
                 <Pressable key={f} onPress={() => setFiltro(f)} style={[s.chip, filtro === f && s.chipOn]}>

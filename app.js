@@ -6,6 +6,7 @@ import RootNavigator from './src/navigation/RootNavigator';
 import { colors } from './src/theme/theme';
 
 export default function App() {
+  // Só abre a navegação depois que a fonte do app estiver pronta.
   const [ok] = useFonts({ Fredoka_400Regular, Fredoka_500Medium, Fredoka_600SemiBold });
   if (!ok) return <ActivityIndicator style={{ flex: 1 }} color={colors.pink} />;
   return (

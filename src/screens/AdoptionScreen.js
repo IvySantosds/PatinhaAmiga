@@ -8,6 +8,7 @@ import { db } from '../config/firebase';
 import { useAuth } from '../context/AuthContext';
 import { colors, font, shadow } from '../theme/theme';
 
+// Mostra opções de resposta sem precisar digitar, como casa ou apartamento.
 function ChoiceRow({ options, value, onChange }) {
   return (
     <View style={s.options}>

@@ -14,6 +14,7 @@ export default function useFavorites() {
   useEffect(() => {
     if (!user) return undefined;
 
+    // Escuta a lista no Firestore para refletir mudanças sem precisar atualizar a tela.
     return onSnapshot(
       collection(db, 'usuarios', user.uid, 'favoritos'),
       (snapshot) => {
@@ -31,6 +32,7 @@ export default function useFavorites() {
   }, [user]);
 
   // Informa se o animal já está salvo na lista.
+  // Compara pelo ID do animal, que também é o ID do documento de favorito.
   const isFav = useCallback((id) => favs.some((favorite) => favorite.id === id), [favs]);
 
   // Salva ou remove o animal e dá retorno tátil quando a operação funciona.

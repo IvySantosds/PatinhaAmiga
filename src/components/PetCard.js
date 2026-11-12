@@ -2,7 +2,7 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, font, shadow } from '../theme/theme';
 
-// Cartão compacto usado na lista de animais da Home.
+// Cartão de animal usado nas listas; o coração salva sem abrir os detalhes.
 export default function PetCard({ pet, fav, onPress, onFav }) {
   return (
     <Pressable

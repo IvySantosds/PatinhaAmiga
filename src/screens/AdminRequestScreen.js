@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { doc, serverTimestamp, writeBatch } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { useAuth } from '../context/AuthContext';
 import { colors, font, shadow } from '../theme/theme';
 
 function Row({ label, value }) {
@@ -18,11 +19,17 @@ function Row({ label, value }) {
 
 // Exibe os dados enviados e permite ao admin decidir o pedido.
 export default function AdminRequestScreen({ route, navigation }) {
+  const { admin } = useAuth();
   const pedido = route.params?.pedido;
   const [saving, setSaving] = useState(false);
 
   // Salva a decisão; quando aprova, também tira o animal da lista disponível.
   function decide(status) {
+    if (!admin?.ongId || pedido?.ongId !== admin.ongId) {
+      Alert.alert('Acesso não permitido', 'Este pedido não pertence à sua ONG.');
+      navigation.goBack();
+      return;
+    }
     if (!pedido?.id || !pedido?.animalId || saving) return;
     const approve = status === 'aprovado';
 
@@ -53,10 +60,10 @@ export default function AdminRequestScreen({ route, navigation }) {
     );
   }
 
-  if (!pedido) {
+  if (!pedido || !admin?.ongId || pedido.ongId !== admin.ongId) {
     return (
       <SafeAreaView style={s.page}>
-        <Text style={s.title}>Pedido não encontrado</Text>
+        <Text style={s.title}>{pedido ? 'Acesso não permitido' : 'Pedido não encontrado'}</Text>
         <Pressable onPress={() => navigation.goBack()} style={s.secondaryButton}><Text style={s.secondaryText}>Voltar</Text></Pressable>
       </SafeAreaView>
     );

@@ -12,6 +12,7 @@ import MainTabs from './MainTabs';
 
 const Stack = createNativeStackNavigator();
 
+// Escolhe o conjunto de telas conforme a sessão e o cadastro de admin no Firestore.
 export default function RootNavigator() {
   const { user, isAdmin, loading } = useAuth();
   if (loading) return <ActivityIndicator style={{ flex: 1 }} color={colors.pink} />;

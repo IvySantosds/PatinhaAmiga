@@ -13,7 +13,8 @@ const firebaseConfig = {
   measurementId: "G-P7GSRD1VVZ"
 };
 
-// Initialize Firebase
+// Aqui ficam as conexões usadas pelo restante do app: login e Firestore.
 const app = initializeApp(firebaseConfig);
+// Mantém a sessão salva no aparelho, mesmo depois de fechar o app.
 export const auth = initializeAuth(app, { persistence: getReactNativePersistence(AsyncStorage) });
 export const db = getFirestore(app);

@@ -6,6 +6,7 @@ import { colors, font, shadow } from '../theme/theme';
 
 const sim = (value) => (value ? 'Sim' : 'Não');
 
+// Reaproveita o mesmo visual para as informações básicas do animal.
 function Info({ titulo, valor, cor }) {
   return (
     <View style={[s.info, { backgroundColor: cor }]}>

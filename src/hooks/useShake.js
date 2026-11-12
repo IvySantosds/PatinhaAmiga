@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Accelerometer } from 'expo-sensors';
 
-// Escuta o acelerômetro enquanto a tela está ativa e chama onShake ao detectar uma sacudida.
+// Escuta o movimento do celular e chama a função recebida quando detecta uma sacudida.
 export default function useShake(onShake, enabled = true) {
   const callback = useRef(onShake);
 
@@ -26,6 +26,7 @@ export default function useShake(onShake, enabled = true) {
           const force = Math.sqrt(x * x + y * y + z * z);
           const now = Date.now();
 
+          // O limite evita disparos com movimentos leves; a pausa evita vários sorteios seguidos.
           if (force > 1.8 && now - lastShakeAt > 1500) {
             lastShakeAt = now;
             callback.current?.();

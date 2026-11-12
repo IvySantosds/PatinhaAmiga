@@ -9,6 +9,7 @@ import { colors, font } from '../theme/theme';
 export default function SuccessScreen({ route, navigation }) {
   const pet = route.params?.pet;
 
+  // Vibra uma vez quando a confirmação aparece.
   useEffect(() => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
   }, []);

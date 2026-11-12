@@ -60,6 +60,7 @@ export default function AdminPetFormScreen() {
 
     setSaving(true);
     try {
+      // Os dados da ONG vêm do documento admins/{uid} e ficam junto ao animal.
       await addDoc(collection(db, 'animais'), {
         foto,
         nome,

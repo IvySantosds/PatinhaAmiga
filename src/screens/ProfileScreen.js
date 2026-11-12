@@ -22,6 +22,7 @@ export default function ProfileScreen() {
   const [requestsState, setRequestsState] = useState({ uid: null, requests: [], loading: true, error: false });
   const [loggingOut, setLoggingOut] = useState(false);
 
+  // Busca só os pedidos desta conta e recebe mudanças de status na hora.
   useEffect(() => {
     if (!user?.uid) return undefined;
 
@@ -64,6 +65,7 @@ export default function ProfileScreen() {
     ]);
   }
 
+  // Monta o cartão do pedido com o status e a data enviados pelo Firestore.
   function renderRequest({ item }) {
     const status = STATUS[item.status] || STATUS.pendente;
     return (

@@ -13,6 +13,7 @@ const icons = { Requests: 'list', NewPet: 'add-circle', Logout: 'log-out' };
 const labels = { Requests: 'Pedidos', NewPet: 'Novo animal', Logout: 'Sair' };
 
 function LogoutTab() {
+  // A aba não tem tela própria; tocar nela abre a confirmação de saída.
   return <View />;
 }
 

@@ -11,6 +11,7 @@ const labels = {
   AdminRequest: 'Análise do pedido',
 };
 
+// Tela provisória usada apenas em etapas que ainda não foram implementadas.
 export default function PendingScreen({ route }) {
   const title = labels[route?.name] || 'Esta etapa';
 

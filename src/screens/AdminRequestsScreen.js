@@ -3,6 +3,7 @@ import { ActivityIndicator, FlatList, Image, Pressable, StyleSheet, Text, View }
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { useAuth } from '../context/AuthContext';
 import { colors, font, shadow } from '../theme/theme';
 
 const FILTERS = [
@@ -14,22 +15,29 @@ const STATUS_COLORS = { pendente: colors.butter, aprovado: colors.mint, recusado
 
 // Acompanha os pedidos do status selecionado e abre sua análise.
 export default function AdminRequestsScreen({ navigation }) {
+  const { admin } = useAuth();
   const [status, setStatus] = useState('pendente');
   const [result, setResult] = useState({ status: null, pedidos: [], loading: true, error: false });
-  const loading = result.status !== status || result.loading;
+  const loading = Boolean(admin?.ongId) && (result.status !== status || result.loading);
 
-  useEffect(() => onSnapshot(
-    query(collection(db, 'pedidos'), where('status', '==', status)),
-    (snapshot) => {
-      const pedidos = snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
-      pedidos.sort((a, b) => (b.criadoEm?.seconds || 0) - (a.criadoEm?.seconds || 0));
-      setResult({ status, pedidos, loading: false, error: false });
-    },
-    (error) => {
-      console.warn('Não foi possível carregar os pedidos.', error);
-      setResult({ status, pedidos: [], loading: false, error: true });
-    },
-  ), [status]);
+  // Cada botão de status troca a consulta feita no Firestore.
+  useEffect(() => {
+    if (!admin?.ongId) return undefined;
+
+    return onSnapshot(
+      query(collection(db, 'pedidos'), where('ongId', '==', admin.ongId), where('status', '==', status)),
+      (snapshot) => {
+        const pedidos = snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
+        // Deixa os pedidos mais recentes no topo.
+        pedidos.sort((a, b) => (b.criadoEm?.seconds || 0) - (a.criadoEm?.seconds || 0));
+        setResult({ status, pedidos, loading: false, error: false });
+      },
+      (error) => {
+        console.warn('Não foi possível carregar os pedidos.', error);
+        setResult({ status, pedidos: [], loading: false, error: true });
+      },
+    );
+  }, [admin?.ongId, status]);
 
   const pedidos = result.status === status ? result.pedidos : [];
 
@@ -52,7 +60,7 @@ export default function AdminRequestsScreen({ navigation }) {
         contentContainerStyle={s.list}
         ListEmptyComponent={loading
           ? <ActivityIndicator color={colors.pink} style={s.empty} />
-          : <Text style={s.empty}>{result.error ? 'Não foi possível carregar os pedidos.' : 'Nenhum pedido nesta categoria.'}</Text>}
+          : <Text style={s.empty}>{!admin?.ongId || result.error ? 'Não foi possível carregar os pedidos. Confira o vínculo da sua ONG.' : 'Nenhum pedido nesta categoria.'}</Text>}
         renderItem={({ item }) => (
           <Pressable style={s.card} onPress={() => navigation.navigate('AdminRequest', { pedido: item })}>
             {item.animalFoto
