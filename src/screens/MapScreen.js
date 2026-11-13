@@ -107,19 +107,6 @@ export default function MapScreen() {
     });
   }, [mapReady, mapLaidOut, ongs]);
 
-  // Abre o aplicativo de telefone com o número da ONG.
-  async function ligarParaOng(ong) {
-    if (!ong.telefone) {
-      Alert.alert('Telefone não cadastrado', 'Esta ONG ainda não informou um telefone.');
-      return;
-    }
-    try {
-      await Linking.openURL(`tel:${ong.telefone}`);
-    } catch {
-      Alert.alert('Não foi possível ligar', 'Confira se há um aplicativo de telefone disponível.');
-    }
-  }
-
   // Na versão web, abre as coordenadas no Google Maps.
   function abrirMapaExterno(ong) {
     const url = `https://www.google.com/maps/search/?api=1&query=${ong.latitude},${ong.longitude}`;
@@ -142,18 +129,14 @@ export default function MapScreen() {
             </Pressable>
           )}
         </View>
-        <View style={s.actions}>
-          <Pressable style={s.button} onPress={() => ligarParaOng(ong)}>
-            <Ionicons name='call' size={17} color='#fff' />
-            <Text style={s.buttonText}>Ligar</Text>
-          </Pressable>
-          {Platform.OS === 'web' && (
+        {Platform.OS === 'web' && (
+          <View style={s.actions}>
             <Pressable style={[s.button, s.secondaryButton]} onPress={() => abrirMapaExterno(ong)}>
               <Ionicons name='map' size={17} color={colors.pink} />
               <Text style={[s.buttonText, s.secondaryText]}>Abrir mapa</Text>
             </Pressable>
-          )}
-        </View>
+          </View>
+        )}
       </View>
     );
   }

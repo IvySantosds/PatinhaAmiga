@@ -37,7 +37,7 @@ O projeto foi desenvolvido como aplicativo móvel e atende a estes requisitos:
 - **Buscar e filtrar:** pesquisa por nome, raça, ONG ou cidade; a busca não diferencia maiúsculas e minúsculas nem exige acentos. Os filtros separam todos, cães, gatos e filhotes.
 - **Ver detalhes:** apresenta informações do animal, dados de saúde e nome da ONG responsável.
 - **Favoritar:** salva os animais na subcoleção `usuarios/{uid}/favoritos`. A lista acompanha as mudanças do Firestore.
-- **Ver ONGs no mapa:** mostra os pontos cadastrados, enquadra as ONGs no mapa e apresenta cidade e endereço. Quando permitido, também mostra a localização do aparelho e a distância aproximada até a ONG. É possível ligar para a ONG.
+- **Ver ONGs no mapa:** mostra os pontos cadastrados, enquadra as ONGs no mapa e apresenta cidade e endereço. Quando permitido, também mostra a localização do aparelho e a distância aproximada até a ONG. Na versão web, é possível abrir as coordenadas no Google Maps.
 - **Enviar pedido de adoção:** valida os dados essenciais e grava o pedido no Firestore para análise da ONG.
 - **Acompanhar pedidos:** o perfil mostra a quantidade de pedidos e o status de cada um.
 - **Sortear animal:** sacudir o aparelho na tela inicial abre os detalhes de um animal disponível.
@@ -97,7 +97,7 @@ O app usa estas coleções e campos principais:
 | Caminho | Campos principais |
 | --- | --- |
 | `animais/{id}` | `nome`, `especie`, `raca`, `idade`, `sexo`, `porte`, `vacinado`, `castrado`, `filhote`, `cidade`, `descricao`, `foto`, `ongId`, `ongNome`, `disponivel` |
-| `ongs/{ongId}` | `nome`, `telefone`, `cidade`, `endereco`, `latitude`, `longitude` |
+| `ongs/{ongId}` | `nome`, `cidade`, `endereco`, `latitude`, `longitude` |
 | `usuarios/{uid}` | `uid`, `email`, `nome`, `criadoEm` |
 | `usuarios/{uid}/favoritos/{animalId}` | Dados do animal favoritado |
 | `pedidos/{id}` | `uid`, dados do adotante, `animalId`, `animalNome`, `animalFoto`, `status`, datas |

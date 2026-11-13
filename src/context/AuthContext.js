@@ -20,7 +20,7 @@ export function AuthProvider({ children }) {
         // O UID da conta aponta para o documento que libera o painel de admin.
         const snap = await getDoc(doc(db, 'admins', u.uid));
         dados = snap.exists() ? snap.data() : null;
-      } catch (e) { dados = null; }
+      } catch { dados = null; }
     }
     setAdmin(dados);
     setUser(u);
